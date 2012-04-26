@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:orientation="vertical">
-	    
-	    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="horizontal">
-			<EditText
-			        android:id="@+id/locationedittext"
-			        android:layout_width="fill_parent"
-			        android:layout_height="wrap_content"
-			        android:background="@android:drawable/editbox_background"
-			        android:hint="@string/location_search"
-			        android:inputType="textPostalAddress"/>    
-   		</LinearLayout>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
 
-		<com.google.android.maps.MapView
-		    xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:id="@+id/mapview"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:clickable="true"
-		    android:apiKey="0nPbAvuDMJWq7-mfR2dkquZuR57FTJX3ZCUEFJA"/>
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<EditText
+			android:id="@+id/locationedittext"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@android:drawable/editbox_background"
+			android:hint="@string/location_search"
+			android:inputType="textPostalAddress" />
 	</LinearLayout>
+
+	<com.google.android.maps.MapView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/mapview"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:clickable="true"
+		android:apiKey="0nPbAvuDMJWq7-mfR2dkquZuR57FTJX3ZCUEFJA" />
+</LinearLayout>
