@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<!-- Common -->
     <string name="title">FlickrCity</string>
     <string name="app_name">FlickrCity</string>
+    
+    <!-- main.xml -->
     <string name="location_search">Search Cities</string>
+    
+    <!-- citydetails.xml -->
+    <string name="cd_latitude">Latitude:</string>
+    <string name="cd_longitude">Longitude:</string>
+    <string name="cd_view_photos">View Flickr Photos</string>
 
 </resources>

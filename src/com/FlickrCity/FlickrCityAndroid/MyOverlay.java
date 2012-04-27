@@ -1,8 +1,15 @@
 package com.FlickrCity.FlickrCityAndroid;
 
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.OverlayItem;
 
-public class MyOverlay extends com.google.android.maps.OverlayItem {
+/**
+ * MyOverlay - class to hold city information
+ * 
+ * @author khalid, dparker, hunter
+ *
+ */
+public class MyOverlay extends OverlayItem {
 
 	private City city;
 

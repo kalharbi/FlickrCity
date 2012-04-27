@@ -9,6 +9,12 @@ import android.graphics.drawable.Drawable;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
+/**
+ * MyItemizedOverlay - class to hold MyOverlay classes
+ * 
+ * @author khalid, dparker, hunter
+ * 
+ */
 public class MyItemizedOverlay extends ItemizedOverlay<MyOverlay> {
 
 	private ArrayList<OverlayItem> myOverlays = new ArrayList<OverlayItem>();
@@ -47,16 +53,10 @@ public class MyItemizedOverlay extends ItemizedOverlay<MyOverlay> {
 	protected boolean onTap(int index) {
 		MyOverlay item = (MyOverlay) myOverlays.get(index);
 		Intent i = new Intent(myContext, CityDetailsView.class);
-		i.putExtra("NAME", item.getCity().getName());
-		i.putExtra("LAT", item.getCity().getLatitude());
-		i.putExtra("LONG", item.getCity().getLongitude());
+		i.putExtra(Constants.NAME, item.getCity().getName());
+		i.putExtra(Constants.LAT, item.getCity().getLatitude());
+		i.putExtra(Constants.LNG, item.getCity().getLongitude());
 		myContext.startActivity(i);
-		// TODO: Open up a new activity (CityDetailsView) instead of the
-		// AlertDialog.
-		// AlertDialog.Builder dialog = new AlertDialog.Builder(myContext);
-		// dialog.setTitle(item.getTitle());
-		// dialog.setMessage(item.getSnippet());
-		// dialog.show();
 		return true;
 	}
 }

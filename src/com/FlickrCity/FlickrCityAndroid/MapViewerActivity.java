@@ -28,6 +28,12 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
+/**
+ * MapViewActivity - class for the map activity
+ * 
+ * @author khalid, dparker, hunter
+ *
+ */
 public class MapViewerActivity extends MapActivity implements LocationListener {
 	private static final String TAG = "MapViewActivity";
 	private MapView mapView;
