@@ -1,5 +1,10 @@
 package com.FlickrCity.FlickrCityAndroid;
 
+/**
+ * City model - Class that contains name, latitude, and longitude of a city
+ * 
+ * @author khalid, dparker, hunter
+ */
 public class City {
 
 	private String name;

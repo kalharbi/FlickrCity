@@ -28,6 +28,11 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
+/**
+ * MapViewerActivity - Class to view the map
+ * 
+ * @author khalid, dparker, hunter
+ */
 public class MapViewerActivity extends MapActivity implements LocationListener {
 	private static final String TAG = "MapViewActivity";
 	private MapView mapView;
@@ -64,8 +69,9 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					// search for the entered location
-					progDialog = ProgressDialog.show(MapViewerActivity.this, "Progressing...",
-							"Finding location...", true, false);
+					progDialog = ProgressDialog.show(MapViewerActivity.this,
+							getString(R.string.progress_dialog_title),
+							getString(R.string.progress_dialog_message), true, false);
 					searchForLocation(edittext.getText().toString());
 
 					return true;
@@ -85,11 +91,16 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 				int latitude = (int) (location.getLatitude() * 1e6);
 				addOverlayItems(latitude, longitude);
 			} else
-				Toast.makeText(this, "Unknown location! ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.unknown_location), Toast.LENGTH_SHORT)
+						.show();
 		}
 	}
 
 	// add marker on the map
+	/**
+	 * @param latitude
+	 * @param longitude
+	 */
 	public void addOverlayItems(int latitude, int longitude) {
 		City city = new City();
 		String name = "";
@@ -108,9 +119,8 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 			Log.e(TAG, "Can't connect to Geocoder", e);
 		}
 
-		MyOverlay overlayitem = new MyOverlay(point, "City", name);
+		MyOverlay overlayitem = new MyOverlay(point, getString(R.string.myoverlay_title), name);
 		overlayitem.setCity(city);
-		// overlayitem.
 		itemizedoverlay.addOverlay(overlayitem);
 		mapOverlays.add(itemizedoverlay);
 	}
@@ -144,16 +154,12 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 			if (addressList != null && addressList.size() > 0) {
 				int lat = (int) (addressList.get(0).getLatitude() * 1e6);
 				int lng = (int) (addressList.get(0).getLongitude() * 1e6);
-				// GeoPoint pt=new GeoPoint(lat, lng);
-				// mapView.getController().setZoom(7);
-				// mapView.getController().setCenter(pt);
 				addOverlayItems(lat, lng);
-
 			} else {
 				Dialog foundNothingDlg = new AlertDialog.Builder(MapViewerActivity.this).setIcon(0)
-						.setTitle("Failed to find location").setPositiveButton("OK", null)
-						.setMessage("Ooops! Location not Found! Go back, friend, go back!")
-						.create();
+						.setTitle(getString(R.string.nothing_dialog_title))
+						.setPositiveButton(Constants.OK, null)
+						.setMessage(getString(R.string.nothing_dialog_message)).create();
 				foundNothingDlg.show();
 			}
 		}
@@ -183,13 +189,15 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		Toast.makeText(this, "Enabled new provider " + provider, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, getString(R.string.provider_enabled) + provider, Toast.LENGTH_SHORT)
+				.show();
 
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		Toast.makeText(this, "Disabled provider " + provider, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, getString(R.string.provider_disabled) + provider, Toast.LENGTH_SHORT)
+				.show();
 	}
 
 	@Override
@@ -200,7 +208,6 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 	@Override
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 		// TODO Auto-generated method stub
-
 	}
 
 }

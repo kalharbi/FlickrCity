@@ -20,7 +20,6 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:contentDescription="FlickrCity" />
-
 		<TextView
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:id="@+id/textviewtitle"
@@ -40,12 +39,11 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
-
 		<TextView
 			android:id="@+id/textviewlat"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Latitude:"
+			android:text="@string/cd_latitude"
 			android:textSize="18dp" />
 		<TextView
 			android:id="@+id/textviewlatVal"
@@ -59,15 +57,14 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
-
 		<TextView
-			android:id="@+id/textviewlong"
+			android:id="@+id/textviewlng"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Longitude:"
+			android:text="@string/cd_longitude"
 			android:textSize="18dp" />
 		<TextView
-			android:id="@+id/textviewlongVal"
+			android:id="@+id/textviewlngVal"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textSize="18dp" />
@@ -77,6 +74,6 @@
 		android:id="@+id/view_flickr_pictures"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="view Flickr pictures" />
+		android:text="@string/cd_view_photos" />
 
 </LinearLayout>
