@@ -38,7 +38,7 @@ public class ImageAdapter extends BaseAdapter {
 			imageView = (ImageView) convertView;
 		}
 
-		// imageView.setImageResource(mThumbIds[position]);
+		imageView.setImageResource(R.drawable.flickrcity_launcher_48);
 		return imageView;
 	}
 

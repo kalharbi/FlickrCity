@@ -1,6 +1,17 @@
 package com.FlickrCity.FlickrCityAndroid;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
+import com.FlickrCity.FlickrAPI.FlickrAPI;
+import com.FlickrCity.FlickrAPI.FlickrPhoto;
+import com.FlickrCity.FlickrAPI.FlickrPlace;
 
 /**
  * ConcurrentAPI - Class used to concurrently call different APIs
@@ -21,33 +32,38 @@ public class ConcurrentAPI {
 		this.poolSize = (int) (this.numberOfCores / (1 - this.blockingCoefficient));
 	}
 
-	public void call() throws InterruptedException, ExecutionException {
-		// final List<Callable<String>> partitions = new
-		// ArrayList<Callable<String>>();
-
+	public void call(double latitude, double longitude) throws InterruptedException,
+			ExecutionException {
+		final List<Callable<String>> partitions = new ArrayList<Callable<String>>();
+		List<String> urls = new ArrayList<String>();
 		// call the Flickr API
 		if (Constants.FLICKR.equals(this.type)) {
-			// String flickrResponse = FlickrAPI.get();
-			// ArrayList urls = new ArrayList<String>();
-			// for (String line:flickrResponse) {
-			// urls.add(JSONObject.parse(line,"URL"));
-			// }
+			FlickrAPI flickrAPI = new FlickrAPI();
+			// 1) Get Flickr Place.
+			FlickrPlace flickrPlace = flickrAPI.findPlaceByLatLon(latitude, longitude);
+			// 2) Get Flickr Photos URLs.
+			String placeId = flickrPlace.getPlaceId();
+			int woeId = flickrPlace.getWoeId();
+			char size = 's';
+			List<FlickrPhoto> photos = flickrAPI.cityPhotosURLs(placeId, woeId);
+			urls = flickrAPI.getPhotosURLs(photos, size);
+			// 3) Get UserName for a given photo.
+			// String userName = flickrAPI.getUserName(photos.get(0));
+
 		}
 		// call other API...
-		// for (final String url: urls) {
-		// partitions.add(new Callable<String>() {
-		// public String call() throws Exception {
-		// return FlickAPI.get(url);
-		// }
-		// });
-		// }
-		// final ExecutorService executorPool =
-		// Executors.newFixedThreadPool(poolSize);
-		// final List<Future<String>> images =
-		// executorPool.invokeAll(partitions, 10000,
-		// TimeUnit.SECONDS);
-		//
-		// executorPool.shutdown();
+		for (final String url : urls) {
+			partitions.add(new Callable<String>() {
+				public String call() throws Exception {
+					return "";
+				}
+			});
+		}
+		final ExecutorService executorPool = Executors.newFixedThreadPool(poolSize);
+		final List<Future<String>> images = executorPool.invokeAll(partitions, 10000,
+				TimeUnit.SECONDS);
+
+		executorPool.shutdown();
 	}
 
 	public int getPoolSize() {

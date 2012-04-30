@@ -3,6 +3,7 @@ package com.FlickrCity.FlickrCityAndroid;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,7 +20,13 @@ import android.widget.Toast;
  */
 public class CityDetailsView extends Activity {
 
-	ConcurrentAPI api;
+	private ConcurrentAPI api;
+	private Context mContext;
+
+	// city details
+	private String mCity;
+	private double mLat;
+	private double mLng;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -27,19 +34,20 @@ public class CityDetailsView extends Activity {
 		setContentView(R.layout.citydetails);
 
 		api = new ConcurrentAPI(Constants.FLICKR);
+		mContext = this;
 
 		// get city info
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			String city = extras.getString(Constants.NAME);
-			double lat = extras.getDouble(Constants.LAT);
-			double lng = extras.getDouble(Constants.LNG);
+			mCity = extras.getString(Constants.NAME);
+			mLat = extras.getDouble(Constants.LAT);
+			mLng = extras.getDouble(Constants.LNG);
 			TextView citytext = (TextView) findViewById(R.id.textviewcityname);
 			TextView lattext = (TextView) findViewById(R.id.textviewlatVal);
 			TextView lngtext = (TextView) findViewById(R.id.textviewlngVal);
-			citytext.setText(city);
-			lattext.setText(String.valueOf(lat));
-			lngtext.setText(String.valueOf(lng));
+			citytext.setText(mCity);
+			lattext.setText(String.valueOf(mLat));
+			lngtext.setText(String.valueOf(mLng));
 		}
 
 		final Button button = (Button) findViewById(R.id.view_flickr_pictures);
@@ -50,7 +58,18 @@ public class CityDetailsView extends Activity {
 				TextView cores = (TextView) findViewById(R.id.corestext);
 				cores.setText(String.valueOf(api.getPoolSize()));
 				try {
-					api.call();
+
+					api.call(mLat, mLng);
+					GridView gridview = (GridView) findViewById(R.id.picture_grid_view);
+					gridview.setAdapter(new ImageAdapter(mContext));
+
+					gridview.setOnItemClickListener(new OnItemClickListener() {
+						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+							Toast.makeText(CityDetailsView.this, "" + position, Toast.LENGTH_SHORT)
+									.show();
+						}
+					});
+
 				} catch (InterruptedException e) {
 					// swallow interrupted exception
 					// TODO: handle this
@@ -58,15 +77,6 @@ public class CityDetailsView extends Activity {
 					// swallow execution exception
 					// TODO: handle this
 				}
-			}
-		});
-
-		GridView gridview = (GridView) findViewById(R.id.picture_grid_view);
-		gridview.setAdapter(new ImageAdapter(this));
-
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				Toast.makeText(CityDetailsView.this, "" + position, Toast.LENGTH_SHORT).show();
 			}
 		});
 
