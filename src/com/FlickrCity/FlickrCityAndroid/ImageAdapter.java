@@ -1,6 +1,10 @@
 package com.FlickrCity.FlickrCityAndroid;
 
+import java.util.List;
+import java.util.concurrent.Future;
+
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,13 +13,15 @@ import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
+	private List<Future<Bitmap>> mBitmaps;
 
-	public ImageAdapter(Context c) {
+	public ImageAdapter(Context c, List<Future<Bitmap>> bitmaps) {
 		mContext = c;
+		mBitmaps = bitmaps;
 	}
 
 	public int getCount() {
-		return 9;// mThumbIds.length;
+		return mBitmaps.size();// mThumbIds.length;
 	}
 
 	public Object getItem(int position) {
@@ -38,7 +44,12 @@ public class ImageAdapter extends BaseAdapter {
 			imageView = (ImageView) convertView;
 		}
 
-		imageView.setImageResource(R.drawable.flickrcity_launcher_48);
+		try {
+			imageView.setImageBitmap(mBitmaps.get(position).get());
+		} catch (Exception e) {
+			// TODO: something about this...
+		}
+		// setImageResource(R.drawable.flickrcity_launcher_48);
 		return imageView;
 	}
 

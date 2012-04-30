@@ -1,5 +1,7 @@
 package com.FlickrCity.FlickrCityAndroid;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -8,6 +10,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.FlickrCity.FlickrAPI.FlickrAPI;
 import com.FlickrCity.FlickrAPI.FlickrPhoto;
@@ -32,10 +37,11 @@ public class ConcurrentAPI {
 		this.poolSize = (int) (this.numberOfCores / (1 - this.blockingCoefficient));
 	}
 
-	public void call(double latitude, double longitude) throws InterruptedException,
-			ExecutionException {
-		final List<Callable<String>> partitions = new ArrayList<Callable<String>>();
+	public List<Future<Bitmap>> call(double latitude, double longitude)
+			throws InterruptedException, ExecutionException {
+		final List<Callable<Bitmap>> partitions = new ArrayList<Callable<Bitmap>>();
 		List<String> urls = new ArrayList<String>();
+
 		// call the Flickr API
 		if (Constants.FLICKR.equals(this.type)) {
 			FlickrAPI flickrAPI = new FlickrAPI();
@@ -51,19 +57,21 @@ public class ConcurrentAPI {
 			// String userName = flickrAPI.getUserName(photos.get(0));
 
 		}
-		// call other API...
+		// else call other API...
+
 		for (final String url : urls) {
-			partitions.add(new Callable<String>() {
-				public String call() throws Exception {
-					return "";
+			partitions.add(new Callable<Bitmap>() {
+				public Bitmap call() throws Exception {
+					return BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
 				}
 			});
 		}
 		final ExecutorService executorPool = Executors.newFixedThreadPool(poolSize);
-		final List<Future<String>> images = executorPool.invokeAll(partitions, 10000,
+		final List<Future<Bitmap>> bitmaps = executorPool.invokeAll(partitions, 10000,
 				TimeUnit.SECONDS);
 
 		executorPool.shutdown();
+		return bitmaps;
 	}
 
 	public int getPoolSize() {
