@@ -110,7 +110,7 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 		mapView.getController().animateTo(point);
 		try {
 			Geocoder gcd = new Geocoder(MapViewerActivity.this, Locale.getDefault());
-			List<Address> addresses = gcd.getFromLocation((int) latitude, (int) longitude, 1);
+			List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
 			if (addresses.size() > 0)
 				name = addresses.get(0).getLocality();
 			city.setName(name);

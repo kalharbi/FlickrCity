@@ -37,8 +37,8 @@ public class ConcurrentAPI {
 		this.poolSize = (int) (this.numberOfCores / (1 - this.blockingCoefficient));
 	}
 
-	public List<Future<Bitmap>> call(double latitude, double longitude)
-			throws InterruptedException, ExecutionException {
+	public List<Bitmap> call(double latitude, double longitude) throws InterruptedException,
+			ExecutionException {
 		final List<Callable<Bitmap>> partitions = new ArrayList<Callable<Bitmap>>();
 		List<String> urls = new ArrayList<String>();
 
@@ -70,8 +70,12 @@ public class ConcurrentAPI {
 		final List<Future<Bitmap>> bitmaps = executorPool.invokeAll(partitions, 10000,
 				TimeUnit.SECONDS);
 
+		final List<Bitmap> finalList = new ArrayList<Bitmap>();
+		for (final Future<Bitmap> bitmap : bitmaps) {
+			finalList.add(bitmap.get());
+		}
 		executorPool.shutdown();
-		return bitmaps;
+		return finalList;
 	}
 
 	public int getPoolSize() {
