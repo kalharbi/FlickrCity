@@ -3,7 +3,6 @@ package com.FlickrCity.FlickrCityAndroid;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,15 +11,15 @@ import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
-	private List<Bitmap> mBitmaps;
+	private List<PhotoResponse> mPrs;
 
-	public ImageAdapter(Context c, List<Bitmap> bitmaps) {
+	public ImageAdapter(Context c, List<PhotoResponse> prs) {
 		mContext = c;
-		mBitmaps = bitmaps;
+		mPrs = prs;
 	}
 
 	public int getCount() {
-		return mBitmaps.size();// mThumbIds.length;
+		return mPrs.size();// mThumbIds.length;
 	}
 
 	public Object getItem(int position) {
@@ -43,7 +42,8 @@ public class ImageAdapter extends BaseAdapter {
 			imageView = (ImageView) convertView;
 		}
 
-		imageView.setImageBitmap(mBitmaps.get(position));
+		imageView.setImageBitmap(mPrs.get(position).getBitmap());
+		imageView.setTag(position, mPrs.get(position).getUrl());
 		// setImageResource(R.drawable.flickrcity_launcher_48);
 		return imageView;
 	}

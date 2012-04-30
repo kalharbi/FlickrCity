@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.FlickrCity.FlickrAPI.FlickrAPI;
@@ -37,9 +36,9 @@ public class ConcurrentAPI {
 		this.poolSize = (int) (this.numberOfCores / (1 - this.blockingCoefficient));
 	}
 
-	public List<Bitmap> call(double latitude, double longitude) throws InterruptedException,
+	public List<PhotoResponse> call(double latitude, double longitude) throws InterruptedException,
 			ExecutionException {
-		final List<Callable<Bitmap>> partitions = new ArrayList<Callable<Bitmap>>();
+		final List<Callable<PhotoResponse>> partitions = new ArrayList<Callable<PhotoResponse>>();
 		List<String> urls = new ArrayList<String>();
 
 		// call the Flickr API
@@ -60,19 +59,22 @@ public class ConcurrentAPI {
 		// else call other API...
 
 		for (final String url : urls) {
-			partitions.add(new Callable<Bitmap>() {
-				public Bitmap call() throws Exception {
-					return BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
+			partitions.add(new Callable<PhotoResponse>() {
+				public PhotoResponse call() throws Exception {
+					PhotoResponse pr = new PhotoResponse();
+					pr.setUrl(url);
+					pr.setBitmap(BitmapFactory.decodeStream((InputStream) new URL(url).getContent()));
+					return pr;
 				}
 			});
 		}
 		final ExecutorService executorPool = Executors.newFixedThreadPool(poolSize);
-		final List<Future<Bitmap>> bitmaps = executorPool.invokeAll(partitions, 10000,
+		final List<Future<PhotoResponse>> prs = executorPool.invokeAll(partitions, 10000,
 				TimeUnit.SECONDS);
 
-		final List<Bitmap> finalList = new ArrayList<Bitmap>();
-		for (final Future<Bitmap> bitmap : bitmaps) {
-			finalList.add(bitmap.get());
+		final List<PhotoResponse> finalList = new ArrayList<PhotoResponse>();
+		for (final Future<PhotoResponse> pr : prs) {
+			finalList.add(pr.get());
 		}
 		executorPool.shutdown();
 		return finalList;
