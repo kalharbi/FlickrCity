@@ -2,6 +2,7 @@ package com.FlickrCity.FlickrCityAndroid;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,14 +61,15 @@ public class CityDetailsView extends Activity {
 				TextView cores = (TextView) findViewById(R.id.corestext);
 				cores.setText(String.valueOf(api.getPoolSize()));
 				try {
-					List<PhotoResponse> prs = api.call(mLat, mLng);
+					List<Future<PhotoResponse>> prs = api.call(mLat, mLng);
 					GridView gridview = (GridView) findViewById(R.id.picture_grid_view);
 					gridview.setAdapter(new ImageAdapter(mContext, prs));
 
 					gridview.setOnItemClickListener(new OnItemClickListener() {
 						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-							Toast.makeText(CityDetailsView.this, "" + position, Toast.LENGTH_SHORT)
-									.show();
+							ImageView theView = (ImageView) v;
+							String url = (String) theView.getContentDescription();
+							Toast.makeText(CityDetailsView.this, url, Toast.LENGTH_SHORT).show();
 						}
 					});
 

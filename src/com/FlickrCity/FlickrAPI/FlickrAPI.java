@@ -12,6 +12,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 
 public class FlickrAPI {
 	
@@ -83,7 +85,8 @@ public class FlickrAPI {
         	JSONObject jobj = new JSONObject(jstr);
         	
         	JSONArray photos = jobj.getJSONObject("photos").getJSONArray("photo");
-        	
+			  Log.d("flickr", "photos " + String.valueOf(photos.toString()));
+
         	
         	for(int i=0;i<photos.length();i++){
         		JSONObject jsonObject = photos.getJSONObject(i);
@@ -98,6 +101,7 @@ public class FlickrAPI {
         	}
         }
 		catch(Exception e){
+			Log.d("flickr", e.getMessage());
 			System.out.println(e.getMessage());
 		}
         return photoslist;

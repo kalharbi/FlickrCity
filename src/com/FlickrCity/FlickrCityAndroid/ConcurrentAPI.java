@@ -12,6 +12,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.FlickrCity.FlickrAPI.FlickrAPI;
 import com.FlickrCity.FlickrAPI.FlickrPhoto;
@@ -36,8 +37,8 @@ public class ConcurrentAPI {
 		this.poolSize = (int) (this.numberOfCores / (1 - this.blockingCoefficient));
 	}
 
-	public List<PhotoResponse> call(double latitude, double longitude) throws InterruptedException,
-			ExecutionException {
+	public List<Future<PhotoResponse>> call(double latitude, double longitude)
+			throws InterruptedException, ExecutionException {
 		final List<Callable<PhotoResponse>> partitions = new ArrayList<Callable<PhotoResponse>>();
 		List<String> urls = new ArrayList<String>();
 
@@ -50,8 +51,12 @@ public class ConcurrentAPI {
 			String placeId = flickrPlace.getPlaceId();
 			int woeId = flickrPlace.getWoeId();
 			char size = 's';
+			Log.d("flickr", placeId);
+			Log.d("flickr", String.valueOf(woeId));
 			List<FlickrPhoto> photos = flickrAPI.cityPhotosURLs(placeId, woeId);
+			Log.d("flickr", String.valueOf(photos.size()));
 			urls = flickrAPI.getPhotosURLs(photos, size);
+			Log.d("flickr", String.valueOf(urls.size()));
 			// 3) Get UserName for a given photo.
 			// String userName = flickrAPI.getUserName(photos.get(0));
 
@@ -71,13 +76,8 @@ public class ConcurrentAPI {
 		final ExecutorService executorPool = Executors.newFixedThreadPool(poolSize);
 		final List<Future<PhotoResponse>> prs = executorPool.invokeAll(partitions, 10000,
 				TimeUnit.SECONDS);
-
-		final List<PhotoResponse> finalList = new ArrayList<PhotoResponse>();
-		for (final Future<PhotoResponse> pr : prs) {
-			finalList.add(pr.get());
-		}
 		executorPool.shutdown();
-		return finalList;
+		return prs;
 	}
 
 	public int getPoolSize() {

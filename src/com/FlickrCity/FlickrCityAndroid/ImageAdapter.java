@@ -1,6 +1,8 @@
 package com.FlickrCity.FlickrCityAndroid;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import android.content.Context;
 import android.view.View;
@@ -11,9 +13,9 @@ import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
-	private List<PhotoResponse> mPrs;
+	private List<Future<PhotoResponse>> mPrs;
 
-	public ImageAdapter(Context c, List<PhotoResponse> prs) {
+	public ImageAdapter(Context c, List<Future<PhotoResponse>> prs) {
 		mContext = c;
 		mPrs = prs;
 	}
@@ -42,8 +44,14 @@ public class ImageAdapter extends BaseAdapter {
 			imageView = (ImageView) convertView;
 		}
 
-		imageView.setImageBitmap(mPrs.get(position).getBitmap());
-		imageView.setTag(position, mPrs.get(position).getUrl());
+		try {
+			imageView.setImageBitmap(mPrs.get(position).get().getBitmap());
+			imageView.setContentDescription(mPrs.get(position).get().getUrl());
+		} catch (ExecutionException e) {
+			// TODO: take care of exception
+		} catch (InterruptedException e) {
+			// TODO: take care of exception
+		}
 		// setImageResource(R.drawable.flickrcity_launcher_48);
 		return imageView;
 	}
