@@ -76,5 +76,14 @@
 		android:layout_height="wrap_content"
 		android:text="@string/cd_view_photos" />
 
-	<!-- TODO: insert listview for photos here -->
+	<GridView
+		android:id="@+id/picture_grid_view"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:columnWidth="100dp"
+		android:numColumns="auto_fit"
+		android:verticalSpacing="10dp"
+		android:horizontalSpacing="10dp"
+		android:stretchMode="columnWidth"
+		android:gravity="center"></GridView>
 </LinearLayout>

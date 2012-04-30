@@ -5,12 +5,15 @@ import java.util.concurrent.ExecutionException;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
- * City Details View - Activity to display a city's information and download
- * photos
+ * City Details View - Activity to display a city's information and download photos
  * 
  * @author khalid, dparker, hunter
  */
@@ -55,6 +58,15 @@ public class CityDetailsView extends Activity {
 					// swallow execution exception
 					// TODO: handle this
 				}
+			}
+		});
+
+		GridView gridview = (GridView) findViewById(R.id.picture_grid_view);
+		gridview.setAdapter(new ImageAdapter(this));
+
+		gridview.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				Toast.makeText(CityDetailsView.this, "" + position, Toast.LENGTH_SHORT).show();
 			}
 		});
 
