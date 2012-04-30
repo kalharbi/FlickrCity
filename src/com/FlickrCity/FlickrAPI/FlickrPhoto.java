@@ -1,6 +1,6 @@
 package com.FlickrCity.FlickrAPI;
-
 public class FlickrPhoto {
+
 	
     private long id;
     private String title;
@@ -9,6 +9,7 @@ public class FlickrPhoto {
     private int farm;
     private int server;
     private String secret;
+    private String owner;
     
 	public long getId() {
 		return id;
@@ -52,6 +53,7 @@ public class FlickrPhoto {
 	public void setSecret(String secret) {
 		this.secret = secret;
 	}
+	
 	/* Photo Source URL
 	 * http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_[mstzb].jpg
 	 * Example: http://farm1.staticflickr.com/2/1418878_1e92283336_m.jpg
@@ -61,11 +63,65 @@ public class FlickrPhoto {
 			secret: 1e92283336
 			size: m
 	 */
-	public String getPhototURL( ){
-		
+	
+	private String getBasePhotoURL(){
+		StringBuffer url = new StringBuffer("http://farm");
+		url.append(farm);
+        url.append(".staticflickr.com/");
+        url.append(server);
+        url.append("/");
+        url.append(id);
+        url.append("_");
+        url.append(secret);
+        return url.toString();
 	}
 	
-	public String getThumbnailURL(){
-		
+	public String getPhototURL(char size){
+		StringBuffer url=new StringBuffer(getBasePhotoURL());
+		switch(size){
+			case 's': // s	small square 75x75
+				url.append("_s");
+				break;
+			case 'q': // q	large square 150x150
+				url.append("_q");
+				break;
+			case 't': //t	thumbnail, 100 on longest side
+				url.append("_t");
+				break;
+			case 'm': // m	small, 240 on longest side
+				url.append("_m");
+				break;
+			case 'n': // n	small, 320 on longest side
+				url.append("_n");
+				break;
+			case '-': // -	medium, 500 on longest side
+				url.append("_-");
+				break;
+			case 'z': // z	medium 640, 640 on longest side
+				url.append("_z");
+				break;
+			case 'c': // c	medium 800, 800 on longest side
+				url.append("_c");
+				break;
+			case 'b': // b	large, 1024 on longest side
+				url.append("_b");
+				break;
+			case 'o': // o	original image, either a jpg, gif or png, depending on source format
+				url.append("_o");
+				break;
+				default:
+					System.out.println("Unknown image size!");
+		}
+		// append image format; it can be either jpg, gif, or png
+		url.append(".jpg");
+		return url.toString();
 	}
+	public String getOwner() {
+		return owner;
+	}
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+	
 }
+
