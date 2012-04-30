@@ -29,8 +29,8 @@ public class CityDetailsView extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			String city = extras.getString(Constants.NAME);
-			int lat = extras.getInt(Constants.LAT);
-			int lng = extras.getInt(Constants.LNG);
+			double lat = extras.getDouble(Constants.LAT);
+			double lng = extras.getDouble(Constants.LNG);
 			TextView citytext = (TextView) findViewById(R.id.textviewcityname);
 			TextView lattext = (TextView) findViewById(R.id.textviewlatVal);
 			TextView lngtext = (TextView) findViewById(R.id.textviewlngVal);

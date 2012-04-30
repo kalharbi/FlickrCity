@@ -10,16 +10,9 @@ import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
 /**
-<<<<<<< HEAD
- * MyItemizedOverlay - class to hold MyOverlay classes
- * 
- * @author khalid, dparker, hunter
- * 
-=======
  * MyItemizedOverlay - Class to hold our overlay items
  * 
  * @author khalid, dparker, hunter
->>>>>>> a2c881218845f3ca864df1120f4fe341545b9f42
  */
 public class MyItemizedOverlay extends ItemizedOverlay<MyOverlay> {
 

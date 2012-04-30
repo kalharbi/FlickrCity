@@ -88,8 +88,8 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 		if (locationmanager.isProviderEnabled(provider)) {
 			Location location = locationmanager.getLastKnownLocation(provider);
 			if (location != null) {
-				int longitude = (int) (location.getLongitude() * 1e6);
-				int latitude = (int) (location.getLatitude() * 1e6);
+				double longitude = (double) (location.getLongitude());
+				double latitude = (double) (location.getLatitude());
 				addOverlayItems(latitude, longitude);
 			} else
 				Toast.makeText(this, getString(R.string.unknown_location), Toast.LENGTH_SHORT)
@@ -102,15 +102,15 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 	 * @param latitude
 	 * @param longitude
 	 */
-	public void addOverlayItems(int latitude, int longitude) {
+	public void addOverlayItems(double latitude, double longitude) {
 		City city = new City();
 		String name = "";
-		GeoPoint point = new GeoPoint(latitude, longitude);
+		GeoPoint point = new GeoPoint((int) latitude, (int) longitude);
 		mapView.getController().setZoom(7);
 		mapView.getController().animateTo(point);
 		try {
 			Geocoder gcd = new Geocoder(MapViewerActivity.this, Locale.getDefault());
-			List<Address> addresses = gcd.getFromLocation(latitude / 1e6, longitude / 1e6, 1);
+			List<Address> addresses = gcd.getFromLocation((int) latitude, (int) longitude, 1);
 			if (addresses.size() > 0)
 				name = addresses.get(0).getLocality();
 			city.setName(name);
@@ -153,8 +153,8 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 			progDialog.dismiss();
 
 			if (addressList != null && addressList.size() > 0) {
-				int lat = (int) (addressList.get(0).getLatitude() * 1e6);
-				int lng = (int) (addressList.get(0).getLongitude() * 1e6);
+				double lat = (double) (addressList.get(0).getLatitude());
+				double lng = (double) (addressList.get(0).getLongitude());
 				addOverlayItems(lat, lng);
 			} else {
 				Dialog foundNothingDlg = new AlertDialog.Builder(MapViewerActivity.this).setIcon(0)
@@ -183,8 +183,8 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		int latitude = (int) (location.getLatitude());
-		int longitude = (int) (location.getLongitude());
+		double latitude = (double) (location.getLatitude());
+		double longitude = (double) (location.getLongitude());
 		addOverlayItems(latitude, longitude);
 	}
 

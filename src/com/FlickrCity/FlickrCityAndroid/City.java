@@ -1,21 +1,14 @@
 package com.FlickrCity.FlickrCityAndroid;
 
 /**
-<<<<<<< HEAD
- * City - city model
- * 
- * @author khalid, dparker, hunter
- *
-=======
  * City model - Class that contains name, latitude, and longitude of a city
  * 
  * @author khalid, dparker, hunter
->>>>>>> a2c881218845f3ca864df1120f4fe341545b9f42
  */
 public class City {
 	private String name;
-	private int latitude;
-	private int longitude;
+	private double latitude;
+	private double longitude;
 
 	public String getName() {
 		return name;
@@ -25,19 +18,19 @@ public class City {
 		this.name = name;
 	}
 
-	public int getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(int latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
-	public int getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(int longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 

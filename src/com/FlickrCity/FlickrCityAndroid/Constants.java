@@ -3,7 +3,7 @@ package com.FlickrCity.FlickrCityAndroid;
 /**
  * Constants class
  * 
- * @author khalid, dparker, hunter <<<<<<< HEAD
+ * @author khalid, dparker, hunter
  * 
  */
 public class Constants {
