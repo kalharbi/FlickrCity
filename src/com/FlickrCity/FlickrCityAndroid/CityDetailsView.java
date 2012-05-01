@@ -1,8 +1,6 @@
 package com.FlickrCity.FlickrCityAndroid;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import android.app.Activity;
 import android.content.Context;
@@ -57,29 +55,18 @@ public class CityDetailsView extends Activity {
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// Perform action on click
-				// TODO call concurrency API
-				TextView cores = (TextView) findViewById(R.id.corestext);
-				cores.setText(String.valueOf(api.getPoolSize()));
-				try {
-					List<Future<PhotoResponse>> prs = api.call(mLat, mLng);
-					GridView gridview = (GridView) findViewById(R.id.picture_grid_view);
-					gridview.setAdapter(new ImageAdapter(mContext, prs));
+				List<String> urls = api.call(mLat, mLng);
+				GridView gridview = (GridView) findViewById(R.id.picture_grid_view);
+				gridview.setAdapter(new ImageAdapter(mContext, urls));
 
-					gridview.setOnItemClickListener(new OnItemClickListener() {
-						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-							ImageView theView = (ImageView) v;
-							String url = (String) theView.getContentDescription();
-							Toast.makeText(CityDetailsView.this, url, Toast.LENGTH_SHORT).show();
-						}
-					});
+				gridview.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+						ImageView theView = (ImageView) v;
+						String url = (String) theView.getContentDescription();
+						Toast.makeText(CityDetailsView.this, url, Toast.LENGTH_SHORT).show();
+					}
+				});
 
-				} catch (InterruptedException e) {
-					// swallow interrupted exception
-					// TODO: handle this
-				} catch (ExecutionException e) {
-					// swallow execution exception
-					// TODO: handle this
-				}
 			}
 		});
 

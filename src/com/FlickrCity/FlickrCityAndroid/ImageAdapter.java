@@ -1,8 +1,6 @@
 package com.FlickrCity.FlickrCityAndroid;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import android.content.Context;
 import android.view.View;
@@ -13,15 +11,15 @@ import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
-	private List<Future<PhotoResponse>> mPrs;
+	private List<String> mUrls;
 
-	public ImageAdapter(Context c, List<Future<PhotoResponse>> prs) {
+	public ImageAdapter(Context c, List<String> urls) {
 		mContext = c;
-		mPrs = prs;
+		mUrls = urls;
 	}
 
 	public int getCount() {
-		return mPrs.size();// mThumbIds.length;
+		return mUrls.size();// mThumbIds.length;
 	}
 
 	public Object getItem(int position) {
@@ -44,15 +42,10 @@ public class ImageAdapter extends BaseAdapter {
 			imageView = (ImageView) convertView;
 		}
 
-		try {
-			imageView.setImageBitmap(mPrs.get(position).get().getBitmap());
-			imageView.setContentDescription(mPrs.get(position).get().getUrl());
-		} catch (ExecutionException e) {
-			// TODO: take care of exception
-		} catch (InterruptedException e) {
-			// TODO: take care of exception
-		}
-		// setImageResource(R.drawable.flickrcity_launcher_48);
+		// Concurrently call the urls
+		DrawableManager dm = new DrawableManager();
+		dm.fetchDrawableOnThread(mUrls.get(position), imageView);
+		imageView.setContentDescription(mUrls.get(position));
 		return imageView;
 	}
 
