@@ -11,6 +11,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,7 @@ public class CityDetailsView extends Activity {
 
 	private ConcurrentAPI api;
 	private Context mContext;
-
+	private ProgressBar progressBar=null;
 	// city details
 	private String mCity;
 	private double mLat;
@@ -33,7 +34,8 @@ public class CityDetailsView extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.citydetails);
-
+		
+		progressBar=(ProgressBar)findViewById(R.id.progress_par);
 		api = new ConcurrentAPI(Constants.FLICKR);
 		mContext = this;
 
@@ -70,5 +72,9 @@ public class CityDetailsView extends Activity {
 			}
 		});
 
+	}
+	
+	public void updateProgress(int progress){
+		progressBar.setProgress(progress);
 	}
 }
