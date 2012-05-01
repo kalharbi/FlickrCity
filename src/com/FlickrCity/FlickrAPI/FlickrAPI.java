@@ -1,4 +1,7 @@
 package com.FlickrCity.FlickrAPI;
+import com.FlickrCity.FlickrAPI.FlickrPhoto;
+import com.FlickrCity.FlickrAPI.FlickrPlace;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +15,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.util.Log;
 
 
 public class FlickrAPI {
@@ -52,9 +54,10 @@ public class FlickrAPI {
 	// execute GET request, and return the JSON response from the flickr.photos.search RESTful API method
 	private String httpGETCityPhotos(String placeId, int woeId){
 		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet("http://api.flickr.com/services/rest/?format=json&method=flickr.photos.search"+
+		HttpGet httpGet = new HttpGet("http://api.flickr.com/services/rest/?&method=flickr.photos.search"+
 										"&api_key="+API_KEY+
-				  						"&has_geo="+has_geo+"&page="+page+"&per_page="+per_page+"&place_id="+placeId+"&woe_id="+woeId);
+				  						"&has_geo="+has_geo+"&page="+page+"&per_page="+per_page+"&place_id="+placeId+"&woe_id="+woeId
+				  						+"&format=json&nojsoncallback=1");
 		  try {
 			  HttpResponse response = client.execute(httpGet);
 			  StatusLine statusLine = response.getStatusLine();
@@ -76,17 +79,11 @@ public class FlickrAPI {
 	}
 	
 	// parse the JSON RESTful API response, and return list of images
-	private List<FlickrPhoto> parseJSONSearchReturn(String jsonpString){
-		int beginIndex=jsonpString.indexOf("(");
-		int endIndex=jsonpString.indexOf(")");
-		String jstr=jsonpString.substring(beginIndex+1,endIndex);
+	private List<FlickrPhoto> parseJSONSearchReturn(String jsonString){
         List<FlickrPhoto> photoslist = new ArrayList<FlickrPhoto>(page*per_page);
         try{
-        	JSONObject jobj = new JSONObject(jstr);
-        	
+        	JSONObject jobj = new JSONObject(jsonString);
         	JSONArray photos = jobj.getJSONObject("photos").getJSONArray("photo");
-			  Log.d("flickr", "photos " + String.valueOf(photos.toString()));
-
         	
         	for(int i=0;i<photos.length();i++){
         		JSONObject jsonObject = photos.getJSONObject(i);
@@ -101,7 +98,6 @@ public class FlickrAPI {
         	}
         }
 		catch(Exception e){
-			Log.d("flickr", e.getMessage());
 			System.out.println(e.getMessage());
 		}
         return photoslist;
@@ -124,10 +120,11 @@ public class FlickrAPI {
 	// execute GET request, and return the JSON response from the flickr.places.findByLatLon RESTful API method
 	private String httpGETFindPlaceByLatLon(double lat, double lon, int accuracy){
 		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet("http://api.flickr.com/services/rest/?format=json&method=flickr.places.findByLatLon"+
+		HttpGet httpGet = new HttpGet("http://api.flickr.com/services/rest/?method=flickr.places.findByLatLon"+
 										"&api_key="+API_KEY+
 										"&lat="+lat+"&lon="+lon+
-				  						"&accuracy="+accuracy);
+				  						"&accuracy="+accuracy+
+				  						"&format=json&nojsoncallback=1");
 		  try {
 			  HttpResponse response = client.execute(httpGet);
 			  StatusLine statusLine = response.getStatusLine();
@@ -151,14 +148,10 @@ public class FlickrAPI {
 	}
 	
 	// parse the JSON RESTful API response, and return a place object
-	private FlickrPlace parseJSONPlaceReturn(String jsonpString){
-		int beginIndex=jsonpString.indexOf("(");
-		int endIndex=jsonpString.indexOf(")");
-		String jstr=jsonpString.substring(beginIndex+1,endIndex);
-		
+	private FlickrPlace parseJSONPlaceReturn(String jsonString){		
 		FlickrPlace flickrPlace=new FlickrPlace();
         try{
-	        	JSONObject jobj = new JSONObject(jstr);
+	        	JSONObject jobj = new JSONObject(jsonString);
 	        	JSONArray places = jobj.getJSONObject("places").getJSONArray("place");
 	        	
 	        	JSONObject jsonObject = places.getJSONObject(0);
@@ -181,9 +174,10 @@ public class FlickrAPI {
 	// execute GET request, and return the JSON response from the flickr.people.getInfo RESTful API method
 		private String httpGETUserName(String userId){
 			HttpClient client = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet("http://api.flickr.com/services/rest/?format=json&method=flickr.people.getInfo"+
+			HttpGet httpGet = new HttpGet("http://api.flickr.com/services/rest/?method=flickr.people.getInfo"+
 											"&api_key="+API_KEY+
-											"&user_id="+userId);
+											"&user_id="+userId+
+											"&format=json&nojsoncallback=1");
 			  try {
 				  HttpResponse response = client.execute(httpGet);
 				  StatusLine statusLine = response.getStatusLine();
@@ -207,14 +201,10 @@ public class FlickrAPI {
 		}
 		
 		// parse the JSON RESTful API response, and return the user name
-		private String parseJSONUserNameReturn(String jsonpString){
-			int beginIndex=jsonpString.indexOf("(");
-			int endIndex=jsonpString.indexOf(")");
-			String jstr=jsonpString.substring(beginIndex+1,endIndex);
-			
+		private String parseJSONUserNameReturn(String jsonString){			
 			String userName=null;
 	        try{
-		        	JSONObject jobj = new JSONObject(jstr);
+		        	JSONObject jobj = new JSONObject(jsonString);
 		        	userName = jobj.getJSONObject("person").getJSONObject("username").getString("_content");
 	        	}
 			catch(Exception e){

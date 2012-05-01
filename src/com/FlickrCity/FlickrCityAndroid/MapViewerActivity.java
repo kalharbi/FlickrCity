@@ -103,9 +103,15 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 	 * @param longitude
 	 */
 	public void addOverlayItems(double latitude, double longitude) {
+		if(!mapOverlays.isEmpty()) 
+	     {
+			mapView.getOverlays().clear();
+			mapView.invalidate();
+	     }
+		
 		City city = new City();
 		String name = "";
-		GeoPoint point = new GeoPoint((int) latitude, (int) longitude);
+		GeoPoint point = new GeoPoint((int) (latitude * 1E6), (int) (longitude*1E6));
 		mapView.getController().setZoom(7);
 		mapView.getController().animateTo(point);
 		try {
