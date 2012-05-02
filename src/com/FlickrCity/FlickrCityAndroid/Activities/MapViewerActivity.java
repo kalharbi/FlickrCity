@@ -45,6 +45,7 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 	private LocationManager locationmanager;
 	private String provider;
 	private MyItemizedOverlay itemizedoverlay;
+	private EditText edittext;
 	private List<Overlay> mapOverlays;
 	private Geocoder geocoder = null;
 	private ProgressDialog progDialog = null;
@@ -68,7 +69,7 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 
 		geocoder = new Geocoder(this);
 
-		final EditText edittext = (EditText) findViewById(R.id.locationedittext);
+		edittext = (EditText) findViewById(R.id.locationedittext);
 		edittext.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				// If the event is a key-down event on the "enter" button
@@ -182,6 +183,12 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 	protected void onResume() {
 		super.onResume();
 		locationmanager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
+		// clear previous results story
+		if (!mapOverlays.isEmpty()) {
+			mapView.getOverlays().clear();
+			mapView.invalidate();
+		}
+		edittext.setText("");
 	}
 
 	/* Remove the locationlistener updates when Activity is paused */
