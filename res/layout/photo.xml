@@ -8,5 +8,5 @@
 		android:id="@+id/picture_full_size"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:scaleType="fitXY" />
+		android:scaleType="fitCenter" />
 </LinearLayout>
