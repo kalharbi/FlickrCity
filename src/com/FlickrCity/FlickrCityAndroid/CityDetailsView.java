@@ -1,8 +1,10 @@
 package com.FlickrCity.FlickrCityAndroid;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,18 +26,18 @@ public class CityDetailsView extends Activity {
 
 	private ConcurrentAPI api;
 	private Context mContext;
-	private ProgressBar progressBar=null;
 	// city details
 	private String mCity;
 	private double mLat;
 	private double mLng;
-
+	char degree = '\u00B0';
+	ProgressDialog progressDialog;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.citydetails);
-		
-		progressBar=(ProgressBar)findViewById(R.id.progress_par);
+
 		api = new ConcurrentAPI(Constants.FLICKR);
 		mContext = this;
 
@@ -46,11 +48,28 @@ public class CityDetailsView extends Activity {
 			mLat = extras.getDouble(Constants.LAT);
 			mLng = extras.getDouble(Constants.LNG);
 			TextView citytext = (TextView) findViewById(R.id.textviewcityname);
-			TextView lattext = (TextView) findViewById(R.id.textviewlatVal);
-			TextView lngtext = (TextView) findViewById(R.id.textviewlngVal);
+			TextView text_view_lat_lon = (TextView) findViewById(R.id.text_view_lat_lon);
 			citytext.setText(mCity);
-			lattext.setText(String.valueOf(mLat));
-			lngtext.setText(String.valueOf(mLng));
+			
+		    BigDecimal mLatBigDecimal = new BigDecimal(mLat);
+		    BigDecimal mLngBigDecimal = new BigDecimal(mLng);
+		    double roundedLat = mLatBigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    double roundedLng = mLngBigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		    
+			char NSDirection='N';
+			char EWDirection='E';
+			if(roundedLat<0)
+				{
+					NSDirection='S';
+					roundedLat*=-1.0;
+				}
+			if(roundedLng<0){
+				EWDirection='W';
+				roundedLng*=-1.0;
+			}
+			
+			text_view_lat_lon.setText(" ("+String.valueOf(roundedLat)+degree+NSDirection+","
+					+roundedLng+degree+EWDirection+")");
 		}
 
 		final Button button = (Button) findViewById(R.id.view_flickr_pictures);
@@ -81,9 +100,5 @@ public class CityDetailsView extends Activity {
 			}
 		});
 
-	}
-	
-	public void updateProgress(int progress){
-		progressBar.setProgress(progress);
 	}
 }
