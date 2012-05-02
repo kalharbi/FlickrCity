@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.FlickrCity.FlickrCityAndroid.R;
 import com.FlickrCity.FlickrCityAndroid.Concurrency.DrawableManager;
@@ -24,13 +25,23 @@ public class PhotoActivity extends Activity {
 
 		// if we have extras
 		String newUrl = "";
+		String username = "";
+		String title = "";
 		if (extras != null) {
 			newUrl = extras.getString(Constants.URL_KEY);
+			username = extras.getString(Constants.USERNAME_KEY);
+			title = extras.getString(Constants.TITLE_KEY);
 		}
 
 		ImageView iv = (ImageView) findViewById(R.id.picture_full_size);
 		DrawableManager dm = new DrawableManager();
 		dm.fetchDrawableOnThread(newUrl, iv);
+
+		TextView text_username = (TextView) findViewById(R.id.photo_username);
+		text_username.setText("User: " + username);
+		TextView text_title = (TextView) findViewById(R.id.photo_title);
+		if (!"".equals(title))
+			text_title.setText("Title: " + title);
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);

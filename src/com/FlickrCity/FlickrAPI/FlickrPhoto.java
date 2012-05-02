@@ -2,7 +2,7 @@ package com.FlickrCity.FlickrAPI;
 
 /**
  * @author khalid, dparker, hunter
- *
+ * 
  */
 public class FlickrPhoto {
 
@@ -14,6 +14,7 @@ public class FlickrPhoto {
 	private int server;
 	private String secret;
 	private String owner;
+	private String username;
 
 	public long getId() {
 		return id;
@@ -136,6 +137,14 @@ public class FlickrPhoto {
 
 	public void setOwner(String owner) {
 		this.owner = owner;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }

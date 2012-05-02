@@ -9,25 +9,26 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.FlickrCity.FlickrAPI.FlickrPhoto;
 import com.FlickrCity.FlickrCityAndroid.Concurrency.DrawableManager;
 
 /**
  * ImageAdapter - used with the gridview to display our images concurrently
  * 
  * @author khalid, dparker, hunter
- *
+ * 
  */
 public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
-	private List<String> mUrls;
+	private List<FlickrPhoto> mPhotos;
 
-	public ImageAdapter(Context c, List<String> urls) {
+	public ImageAdapter(Context c, List<FlickrPhoto> photos) {
 		mContext = c;
-		mUrls = urls;
+		mPhotos = photos;
 	}
 
 	public int getCount() {
-		return mUrls.size();// mThumbIds.length;
+		return mPhotos.size();
 	}
 
 	public Object getItem(int position) {
@@ -52,9 +53,11 @@ public class ImageAdapter extends BaseAdapter {
 
 		// Concurrently call the urls
 		DrawableManager dm = new DrawableManager();
-		dm.fetchDrawableOnThread(mUrls.get(position), imageView);
-		imageView.setContentDescription(mUrls.get(position));
+		dm.fetchDrawableOnThread(mPhotos.get(position).getPhototURL('s'), imageView);
+		imageView
+				.setContentDescription(mPhotos.get(position).getPhototURL('s')
+						+ "\n" + mPhotos.get(position).getOwner() + "\n"
+						+ mPhotos.get(position).getTitle());
 		return imageView;
 	}
-
 }

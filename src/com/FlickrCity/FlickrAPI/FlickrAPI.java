@@ -13,6 +13,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 /**
  * FlickrAPI - contains our information to access the FlickrAPI
  * 
@@ -52,14 +54,16 @@ public class FlickrAPI {
 
 	}
 
-	public String getUserName(FlickrPhoto photo) {
-		return parseJSONUserNameReturn(httpGETUserName(photo.getOwner()));
+	public String getUserName(String owner) {
+		return parseJSONUserNameReturn(httpGETUserName(owner));
 	}
 
 	// execute GET request, and return the JSON response from the flickr.photos.search RESTful API
 	// method
 	private String httpGETCityPhotos(String placeId, int woeId) {
 		HttpClient client = new DefaultHttpClient();
+		Log.d(com.FlickrCity.FlickrCityAndroid.Utils.Constants.FLICKR,placeId);
+		Log.d(com.FlickrCity.FlickrCityAndroid.Utils.Constants.FLICKR,String.valueOf(woeId));
 		HttpGet httpGet = new HttpGet(
 				"http://api.flickr.com/services/rest/?&method=flickr.photos.search"
 						+ "&api_key=" + API_KEY + "&has_geo=" + has_geo + "&page=" + page

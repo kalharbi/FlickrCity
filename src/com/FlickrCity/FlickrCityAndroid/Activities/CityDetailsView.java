@@ -16,6 +16,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.FlickrCity.FlickrAPI.FlickrAPI;
+import com.FlickrCity.FlickrAPI.FlickrPhoto;
 import com.FlickrCity.FlickrCityAndroid.R;
 import com.FlickrCity.FlickrCityAndroid.Adapters.ImageAdapter;
 import com.FlickrCity.FlickrCityAndroid.Concurrency.ConcurrentAPI;
@@ -80,23 +82,36 @@ public class CityDetailsView extends Activity {
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// Perform action on click
-				List<String> urls = api.call(mLat, mLng);
+				List<FlickrPhoto> photos = api.call(mLat, mLng);
 				GridView gridview = (GridView) findViewById(R.id.picture_grid_view);
-				gridview.setAdapter(new ImageAdapter(mContext, urls));
+				gridview.setAdapter(new ImageAdapter(mContext, photos));
 
 				gridview.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 						// get the new url and store as extra in intent
 						ImageView theView = (ImageView) v;
-						String oldUrl = (String) theView.getContentDescription();
+						String data = (String) theView.getContentDescription();
+						String lines[] = data.split("\\r?\\n");
+
 						// -6 (_X.jpg)
+						String oldUrl = lines[0];
 						int lastChar = oldUrl.length() - 6;
 						String oldSubUrl = oldUrl.substring(0, lastChar);
 						String newUrl = oldSubUrl + ".jpg";
 
+						// owner and title
+						String owner = lines[1];
+						String title = "";
+						if (lines.length > 2)
+							title = lines[2];
+						FlickrAPI flickrAPI = new FlickrAPI();
+						String username = flickrAPI.getUserName(owner);
+
 						// start new activity
 						Intent i = new Intent(mContext, PhotoActivity.class);
 						i.putExtra(Constants.URL_KEY, newUrl);
+						i.putExtra(Constants.USERNAME_KEY, username);
+						i.putExtra(Constants.TITLE_KEY, title);
 						startActivity(i);
 					}
 				});
