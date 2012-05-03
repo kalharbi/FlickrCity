@@ -38,10 +38,10 @@ public class PhotoActivity extends Activity {
 		dm.fetchDrawableOnThread(newUrl, iv);
 
 		TextView text_username = (TextView) findViewById(R.id.photo_username);
-		text_username.setText("User: " + username);
+		text_username.setText("By: " + username);
 		TextView text_title = (TextView) findViewById(R.id.photo_title);
 		if (!"".equals(title))
-			text_title.setText("Title: " + title);
+			text_title.setText(title);
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);

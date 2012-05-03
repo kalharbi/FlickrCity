@@ -22,14 +22,15 @@
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
-
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		<activity
 			android:name=".Activities.CityDetailsView"
 			android:label="@string/app_name" />
-		<activity android:name=".Activities.PhotoActivity" />
+		<activity
+			android:name=".Activities.PhotoActivity"
+			android:label="@string/app_name" />
 	</application>
 
 </manifest>

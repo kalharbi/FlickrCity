@@ -42,6 +42,7 @@ public class MyItemizedOverlay extends ItemizedOverlay<MyOverlay> {
 	protected MyOverlay createItem(int i) {
 		return (MyOverlay) myOverlays.get(i);
 	}
+	
 
 	// Return the current number of items in the ArrayList.
 	@Override

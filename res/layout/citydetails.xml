@@ -18,41 +18,53 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:contentDescription="@string/app_name" />
-	<TextView
-		android:id="@+id/textviewcityname"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textSize="20dp" 
-		android:textColor="#FFFFFF"/>
-	<TextView
+		<TextView
+			android:id="@+id/textviewcityname"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="20dp"
+			android:textColor="#FFFFFF" />
+		<TextView
 			android:id="@+id/text_view_lat_lon"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textSize="12dp"
 			android:textColor="#FFFFFF" />
 	</LinearLayout>
-		<Button
-		android:id="@+id/view_flickr_pictures"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/cd_view_photos"
-		android:background="#FF0084"
-		android:textColor="#FFFFFF" 
-		android:textSize="15dp"/>
-  <LinearLayout
+
+	<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical">
-     </LinearLayout>
+		android:orientation="horizontal"
+		android:background="#FF0084">
+		<Button
+			android:id="@+id/view_flickr_pictures"
+			android:layout_width="fill_parent"
+			android:layout_height="40dp"
+			android:text="@string/cd_view_photos"
+			android:drawableLeft="@drawable/flickrcity_launcher_32"
+			android:layout_margin="3dp"
+			android:paddingRight="20dp"
+			android:paddingLeft="20dp"
+			android:paddingTop="8dp"
+			android:paddingBottom="2dp"
+			android:textStyle="bold"
+			android:textColor="#0063DC"
+			android:textSize="15dp"
+			android:gravity="center_horizontal" />
+
+	</LinearLayout>
+
 	<GridView
 		android:id="@+id/picture_grid_view"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:columnWidth="80dp"
+		android:columnWidth="60dp"
 		android:numColumns="auto_fit"
 		android:verticalSpacing="10dp"
 		android:horizontalSpacing="10dp"
 		android:stretchMode="columnWidth"
 		android:gravity="center" />
+
 </LinearLayout>
