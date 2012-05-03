@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.FlickrCity.FlickrCityAndroid.R;
@@ -109,11 +110,6 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 	 * @param longitude
 	 */
 	public void addOverlayItems(double latitude, double longitude) {
-		if (!mapOverlays.isEmpty()) {
-			mapView.getOverlays().clear();
-			mapView.invalidate();
-		}
-
 		City city = new City();
 		String name = "";
 		GeoPoint point = new GeoPoint((int) (latitude * 1E6), (int) (longitude * 1E6));
@@ -137,8 +133,17 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 		mapOverlays.add(itemizedoverlay);
 	}
 
+	private void removeOverlays() {
+		if (!mapOverlays.isEmpty()) {
+			mapView.getOverlays().clear();
+			mapView.invalidate();
+		}
+		
+	}
+
 	/* Search for location */
 	public void searchForLocation(final String locName) {
+		removeOverlays();
 		// Run background thread to handle time-consuming search operation.
 		Thread th = new Thread() {
 			public void run() {
@@ -184,10 +189,7 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 		super.onResume();
 		locationmanager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
 		// clear previous results story
-		if (!mapOverlays.isEmpty()) {
-			mapView.getOverlays().clear();
-			mapView.invalidate();
-		}
+		removeOverlays();
 		edittext.setText("");
 	}
 

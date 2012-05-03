@@ -5,7 +5,26 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
-
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:background="#0063DC">
+		<ImageView
+			android:id="@+id/flickrcity_logo"
+			android:src="@drawable/flickrcity_launcher_32"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:contentDescription="@string/app_name" />
+			<TextView
+		android:id="@+id/textviewappname"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="20dp" 
+		android:textColor="#FFFFFF"
+		android:text="@string/app_name"/>
+		</LinearLayout>
 	<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"

@@ -8,6 +8,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -37,13 +39,11 @@ public class CityDetailsView extends Activity {
 	private double mLat;
 	private double mLng;
 	char degree = '\u00B0';
-	ProgressDialog progressDialog;
-
+	private ProgressDialog progDialog = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.citydetails);
-
 		api = new ConcurrentAPI(Constants.FLICKR);
 		mContext = this;
 
@@ -81,11 +81,16 @@ public class CityDetailsView extends Activity {
 		final Button button = (Button) findViewById(R.id.view_flickr_pictures);
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				button.setClickable(false);
+				progDialog = ProgressDialog.show(CityDetailsView.this,"Search",
+						"Searching...", true, false);
+				
 				// Perform action on click
 				List<FlickrPhoto> photos = api.call(mLat, mLng);
 				GridView gridview = (GridView) findViewById(R.id.picture_grid_view);
 				gridview.setAdapter(new ImageAdapter(mContext, photos));
-
+				handler.sendEmptyMessage(0);
+				
 				gridview.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 						// get the new url and store as extra in intent
@@ -120,4 +125,13 @@ public class CityDetailsView extends Activity {
 		});
 
 	}
+	
+    private Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            progDialog.dismiss();
+        }
+    };
+	
 }

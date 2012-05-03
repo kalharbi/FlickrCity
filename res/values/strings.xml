@@ -10,8 +10,8 @@
 
 	<!-- MapViewActivity.java (main.xml) -->
 	<string name="myoverlay_title">City</string>
-	<string name="progress_dialog_title">Progressing...</string>
-	<string name="progress_dialog_message">Finding location...</string>
+	<string name="progress_dialog_title">Progressing</string>
+	<string name="progress_dialog_message">Finding location&#8230;</string>
 	<string name="unknown_location">Unknown location!</string>
 	<string name="nothing_dialog_title">Failed to find location</string>
 	<string name="nothing_dialog_message">Ooops! Location not Found! Go back, friend, go back!</string>

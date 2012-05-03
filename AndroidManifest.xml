@@ -17,19 +17,19 @@
 		android:label="@string/app_name">
 		<uses-library android:name="com.google.android.maps" />
 		<activity
-			android:name=".MapViewerActivity"
+			android:name=".Activities.MapViewerActivity"
 			android:label="@string/app_name"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
-
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		<activity
-			android:name="CityDetailsView"
+			android:name=".Activities.CityDetailsView"
 			android:label="@string/app_name" />
-		<activity android:name="PhotoActivity" />
+		<activity android:name=".Activities.PhotoActivity"
+		    android:label="@string/app_name" />
 	</application>
 
 </manifest>
