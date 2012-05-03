@@ -6,7 +6,7 @@
 	android:versionName="1.0">
 
 	<uses-sdk
-		android:minSdkVersion="7"
+		android:minSdkVersion="8"
 		android:targetSdkVersion="10" />
 
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +17,7 @@
 		android:label="@string/app_name">
 		<uses-library android:name="com.google.android.maps" />
 		<activity
-			android:name=".MapViewerActivity"
+			android:name=".Activities.MapViewerActivity"
 			android:label="@string/app_name"
 			android:theme="@android:style/Theme.NoTitleBar">
 			<intent-filter>
@@ -27,9 +27,9 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name="CityDetailsView"
+			android:name=".Activities.CityDetailsView"
 			android:label="@string/app_name" />
-		<activity android:name="PhotoActivity" />
+		<activity android:name=".Activities.PhotoActivity" />
 	</application>
 
 </manifest>
