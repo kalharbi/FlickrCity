@@ -1,5 +1,5 @@
 FlickrCity
-----------
+==========
 FlickrCity is an Android app that allows you to explore Flickr photos that have been taken from cities around the world.
 This project was started by Khalid Alharbi, David Parker, and Hunter Stevenson. It was meant for a class project for CSCI-5828 Foundations of Software Engineering during Spring 2012, taught by Prof. Ken Anderson, Department of Computer Science, University of Colorado at Boulder.
 
