@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+        <item android:id="@+id/clearMap"
+          android:icon="@drawable/clear_icon"
+          android:title="@string/clearMap"/>
+        
+            <item android:id="@+id/settings"
+          android:icon="@drawable/settings"
+          android:title="@string/settings"/>
+            
+          <item android:id="@+id/my_location"
+          android:icon="@drawable/mylocation"
+          android:title="@string/my_location"/>
+</menu>

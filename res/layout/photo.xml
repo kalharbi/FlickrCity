@@ -6,7 +6,7 @@
 	android:layout_height="fill_parent"
 	android:background="#FFFFFF">
 
-	<LinearLayout
+<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
@@ -19,13 +19,18 @@
 			android:layout_height="wrap_content"
 			android:contentDescription="@string/app_name" />
 		<TextView
-			android:id="@+id/textviewappname"
+			android:id="@+id/textviewcityname_photo"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textSize="20dp"
-			android:textColor="#FFFFFF"
-			android:text="@string/app_name" />
-	</LinearLayout>
+			android:textColor="#FFFFFF"/>
+		<TextView
+			android:id="@+id/text_view_lat_lon_photo"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="12dp"
+			android:textColor="#FFFFFF" />
+</LinearLayout>
 	<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"
@@ -33,40 +38,55 @@
 		android:orientation="horizontal"
 		android:background="#FF0084">
 
-		<TextView
-			android:id="@+id/photo_title"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textSize="17dp"
-			android:textColor="#FFFFFF"
-			android:textStyle="bold" />
-	</LinearLayout>
-	<LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:layout_weight="1"
-		android:background="#FFFFFF">
-		<ImageView
-			android:id="@+id/picture_full_size"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:scaleType="fitCenter"
-			android:contentDescription="@string/app_name" />
-	</LinearLayout>
-	<LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
+	<TextView
+		android:id="@+id/photo_title"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:background="#FF0084">
-		<TextView
-			android:id="@+id/photo_username"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:textSize="17dp"
-			android:textColor="#000000"
-			android:textStyle="bold" />
+		android:textSize="17dp" 
+		android:textColor="#FFFFFF" 
+		android:textStyle="bold"
+		android:paddingLeft="3dip"
+		android:maxLength="120"/>
+		
 	</LinearLayout>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="0dip"
+	android:layout_weight="1"
+	android:layout_marginTop="30dp"
+	android:background="#FFFFFF">
+	<ImageView
+		android:id="@+id/picture_full_size"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:scaleType="fitCenter"
+		android:adjustViewBounds="true"
+		android:contentDescription="@string/app_name" />
+	</LinearLayout>
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#FF0084"
+    android:layout_marginTop="2dp">
+		<TextView
+		android:id="@+id/photo_username"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textSize="17dp" 
+		android:textColor="#000000"
+		android:paddingLeft="3dip" 
+		android:textStyle="bold"/>
+
+		<ImageButton
+        android:id="@+id/addToFavoriteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:contentDescription="@string/add_to_favorites"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/favorite"/>
+</RelativeLayout>
 </LinearLayout>

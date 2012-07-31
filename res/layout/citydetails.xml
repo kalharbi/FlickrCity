@@ -32,29 +32,7 @@
 			android:textColor="#FFFFFF" />
 	</LinearLayout>
 
-	<LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:background="#FF0084">
-		<Button
-			android:id="@+id/view_flickr_pictures"
-			android:layout_width="fill_parent"
-			android:layout_height="40dp"
-			android:text="@string/cd_view_photos"
-			android:drawableLeft="@drawable/flickrcity_launcher_32"
-			android:layout_margin="3dp"
-			android:paddingRight="20dp"
-			android:paddingLeft="20dp"
-			android:paddingTop="8dp"
-			android:paddingBottom="2dp"
-			android:textStyle="bold"
-			android:textColor="#0063DC"
-			android:textSize="15dp"
-			android:gravity="center_horizontal" />
 
-	</LinearLayout>
 
 	<GridView
 		android:id="@+id/picture_grid_view"

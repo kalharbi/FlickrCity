@@ -14,31 +14,17 @@
    limitations under the License.
  */
 
-package com.FlickrCity.FlickrCityAndroid.Overlays;
+package com.FlickrCity.FlickrCityAndroid.Activities;
 
-import com.FlickrCity.FlickrCityAndroid.Models.City;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.OverlayItem;
+import com.FlickrCity.FlickrCityAndroid.R;
 
-/**
- * MyOverlay - Overlay class to hold our city models
- * 
- * @author khalid, dparker, hunter
- */
-public class MyOverlay extends OverlayItem {
+import android.app.Activity;
+import android.os.Bundle;
 
-	private City city;
-
-	public MyOverlay(GeoPoint point, String title, String snippet) {
-		super(point, title, snippet);
+public class SettingsActivity extends Activity {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.settings);
 	}
-
-	public void setCity(City model) {
-		this.city = model;
-	}
-
-	public City getCity() {
-		return this.city;
-	}
-
 }
