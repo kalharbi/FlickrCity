@@ -14,7 +14,7 @@
 		android:background="#0063DC">
 		<ImageView
 			android:id="@+id/flickrcity_image"
-			android:src="@drawable/flickrcity_launcher_32"
+			android:src="@drawable/flickr"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:contentDescription="@string/app_name" />
@@ -23,6 +23,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textSize="20dp"
+			android:paddingLeft="5dp"
 			android:textColor="#FFFFFF" />
 		<TextView
 			android:id="@+id/text_view_lat_lon"

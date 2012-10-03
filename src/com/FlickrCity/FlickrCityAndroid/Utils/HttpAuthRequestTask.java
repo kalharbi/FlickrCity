@@ -21,7 +21,6 @@ public class HttpAuthRequestTask extends AsyncTask<Object,Void,String> {
 	}
 	@Override
 	protected void onPreExecute() {
-        dialog.setMessage("Progressing...");
         dialog.show();
     }
 	

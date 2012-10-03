@@ -7,8 +7,8 @@ package com.FlickrCity.FlickrCityAndroid.Utils;
  * 
  */
 public class Constants {
-	public static final String API_KEY = "FLICKR_API_GOES_HERE";
-	public static final String API_SECRET="FLICKR_API_SECRET_GOES_HERE";
+	public static final String API_KEY = "YOUR_API_KEY_GOES_HERE";
+	public static final String API_SECRET="YOUR_SECRET_KEY_GOES_HERE";
 	public static final String REQUEST_TOKEN_ENDPOINT_URL="http://www.flickr.com/services/oauth/request_token";
 	public static final String ACCESS_TOKEN_ENDPOINT_URL="http://www.flickr.com/services/oauth/access_token";
 	public static final String AUTHORIZATION_URL="http://www.flickr.com/services/oauth/authorize";

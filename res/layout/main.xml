@@ -13,7 +13,7 @@
 		android:background="#0063DC">
 		<ImageView
 			android:id="@+id/flickrcity_logo"
-			android:src="@drawable/flickrcity_launcher_48"
+			android:src="@drawable/flickr"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:contentDescription="@string/app_name" />
@@ -24,6 +24,7 @@
 			android:textSize="20sp"
 			android:layout_marginLeft="3dp"
 			android:layout_marginTop="5dp"
+			android:paddingLeft="5dp"
 			android:textColor="#FFFFFF"
 			android:textStyle="bold"
 			android:text="@string/app_name" />
@@ -49,6 +50,6 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:clickable="true"
-		android:apiKey="GOOGLE_MAPS_API_KEY_GOES_HERE" />
+		android:apiKey="YOUR_GOOGLE_MAPS_API_KEY_GOES_HERE" />
 
 </LinearLayout>

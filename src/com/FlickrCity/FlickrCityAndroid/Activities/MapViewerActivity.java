@@ -22,11 +22,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -44,8 +46,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -88,7 +88,6 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 	private EditText edittext;
 	private List<Overlay> mapOverlays;
 	private Geocoder geocoder = null;
-	private ProgressDialog progDialog = null;
 	List<Address> addressList;
 	private static final int DIALOG_ABOUT = 0;
 	private static final int DIALOG_SETTINGS=1;
@@ -121,7 +120,11 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
         bestProvider = locationManager.getBestProvider(criteria, false);
 
 		geocoder = new Geocoder(this);
-
+		
+		// initially display a set of cities
+		initCities();
+		displayCurrentLocation();
+		
 		edittext = (EditText) findViewById(R.id.locationedittext);
 		edittext.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -129,9 +132,6 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					// search for the entered location
-					progDialog = ProgressDialog.show(MapViewerActivity.this,
-							getString(R.string.progress_dialog_title),
-							getString(R.string.progress_dialog_message), true, false);
 					searchForLocation(edittext.getText().toString());
 
 					return true;
@@ -143,47 +143,78 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 		
 	}
 	
-	
+	// initially display a set of cities
+	private void initCities(){
+		// Amsterdam 52.37, 4.89  
+		addOverlayItems(52.37, 4.89,"Amsterdam",mOverlayCity);
+		// Ankara 39.92, 32.85
+		addOverlayItems(39.92, 32.85,"Ankara",mOverlayCity);
+		// Athens 37.98, 23.72
+		addOverlayItems(37.98, 23.72,"Athens",mOverlayCity);
+		// Atlantic City, 39.36, -74.42
+		addOverlayItems(39.36, -74.42,"Atlantic",mOverlayCity);
+		// Bangkok 13.75, 100.49
+		addOverlayItems(13.75,100.49,"Bangkok",mOverlayCity);
+		// Beijing, 39.90, 116.40
+		addOverlayItems(39.90,116.40,"Beijing",mOverlayCity);
+		// Berlin, 52.51, 13.40
+		addOverlayItems(52.51,13.40,"Berlin",mOverlayCity);
+		// Berne, Switzerland, 46.94,7.44
+		addOverlayItems(46.94,7.44,"Berne",mOverlayCity);
+		// Chicago, 41.87, -87.62
+		addOverlayItems(41.87,-87.62,"Chicago",mOverlayCity);
+		// Seattle 47.60, -122.33
+		addOverlayItems(47.60, -122.33,"Seattle",mOverlayCity);
+		// San Francisco, 37.77, -122.41
+		addOverlayItems(37.77, -122.41,"San Francisco",mOverlayCity);
+		// Giza, 30.01, 31.20
+		addOverlayItems(30.01, 31.20,"Giza",mOverlayCity);
+		// Mumbai, 19.07, 72.87
+		addOverlayItems(19.07, 72.87,"Mumbai",mOverlayCity);
+		// Aspen, 39.19, -106.81
+		addOverlayItems(39.19, -106.81,"Aspen",mOverlayCity);
+		// Seoul, 37.56, 126.97
+		addOverlayItems(37.33, 126.58,"Seoul",mOverlayCity);
+		// Paris, 48.51, 2.21
+		addOverlayItems(48.51, 2.21,"Paris",mOverlayCity);
+		
+		
+	}
 	public void displayCurrentLocation() {
 		
 		if (locationManager.isProviderEnabled(bestProvider)) {
-			Location location = locationManager.getLastKnownLocation(bestProvider);
-			if (location != null) {
-				double longitude = (double) (location.getLongitude());
-				double latitude = (double) (location.getLatitude());
-				addOverlayItems(latitude, longitude,mOverlayCurrentLocation);
-			} else
-				Toast.makeText(this, "No location is available!", Toast.LENGTH_SHORT)
-						.show();
+			City currentCity=null;
+			Geocoder gcd = new Geocoder(MapViewerActivity.this, Locale.getDefault());
+			try {
+				currentCity = new CurrentLocationTask(MapViewerActivity.this).execute(locationManager,bestProvider,gcd).get(20, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				Toast.makeText(MapViewerActivity.this, "Couldn't find current location", Toast.LENGTH_SHORT).show();
+			} catch (ExecutionException e) {
+				Toast.makeText(MapViewerActivity.this, "Couldn't find current location", Toast.LENGTH_SHORT).show();
+			} catch (TimeoutException e) {
+				Toast.makeText(MapViewerActivity.this, "Couldn't find current location", Toast.LENGTH_SHORT).show();
+			}
+			addOverlayItems(currentCity.getLatitude(), currentCity.getLongitude(),
+					currentCity.getName(),mOverlayCurrentLocation);
 		}
 	}
-	
-	
 
 	// add marker on the map
 	/**
 	 * @param latitude
 	 * @param longitude
 	 */
-	public void addOverlayItems(double latitude, double longitude, MyBalloonItemizedOverlay itemizedOverlay) {
+	public void addOverlayItems(double latitude, double longitude, String cityName,MyBalloonItemizedOverlay itemizedOverlay) {
 		City city = new City();
-		String name = "";
 		GeoPoint point = new GeoPoint((int) (latitude * 1E6), (int) (longitude * 1E6));
 		mapView.getController().setZoom(7);
 		mapView.getController().animateTo(point);
-		try {
-			Geocoder gcd = new Geocoder(MapViewerActivity.this, Locale.getDefault());
-			List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
-			if (addresses.size() > 0)
-				name = addresses.get(0).getLocality();
-			city.setName(name);
+			city.setName(cityName);
 			city.setLatitude(latitude);
 			city.setLongitude(longitude);
-		} catch (IOException e) {
-			//e.printStackTrace();
-		}
+			
 		String cityGeoinfo=getCityGeoInfo(latitude,longitude);
-		MyOverlay overlayitem = new MyOverlay(point, name,cityGeoinfo);
+		MyOverlay overlayitem = new MyOverlay(point, cityName,cityGeoinfo);
 		overlayitem.setCity(city);
 		itemizedOverlay.addOverlay(overlayitem);
 		mapOverlays.add(itemizedOverlay);
@@ -220,48 +251,28 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 					NSDirection + "," + roundedLng + degree
 					+ EWDirection + ")";
 	}
-	/* Search for location */
+	// Search for location 
 	public void searchForLocation(final String locName) {
-		removeOverlays();
-		// Run background thread to handle time-consuming search operation.
-		Thread th = new Thread() {
-			public void run() {
-				try {
-					// search for location
-					addressList = geocoder.getFromLocationName(locName, 5);
-					// send message to handler to process results
-					uiCallback.sendEmptyMessage(0);
-				}
-
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		th.start();
-	}
-
-	private Handler uiCallback = new Handler() {
-		@SuppressLint({ "HandlerLeak"})
-		@Override
-		public void handleMessage(Message msg) {
-			// dismiss the dialog
-			progDialog.dismiss();
-
+		try {
+			addressList=new LocationTask(MapViewerActivity.this).execute(geocoder,locName).get(60,TimeUnit.SECONDS);
 			if (addressList != null && addressList.size() > 0) {
 				double lat = (double) (addressList.get(0).getLatitude());
 				double lng = (double) (addressList.get(0).getLongitude());
-				addOverlayItems(lat, lng,mOverlayCity);
-			} else {
-				Dialog foundNothingDlg = new AlertDialog.Builder(MapViewerActivity.this).setIcon(0)
-						.setTitle(getString(R.string.nothing_dialog_title))
-						.setPositiveButton(Constants.OK, null)
-						.setMessage(getString(R.string.nothing_dialog_message)).create();
-				foundNothingDlg.show();
+				String city=addressList.get(0).getLocality();
+				addOverlayItems(lat, lng,city,mOverlayCity);
+			} 
+			else{
+				Toast.makeText(MapViewerActivity.this, "Unknown city!",Toast.LENGTH_LONG).show();
 			}
-		}
+		} catch (InterruptedException e) {
+			Toast.makeText(MapViewerActivity.this, "Ooops... couldn't find that!",Toast.LENGTH_LONG).show();
 
-	};
+		} catch (ExecutionException e) {
+			Toast.makeText(MapViewerActivity.this, "Ooops... couldn't find that!",Toast.LENGTH_LONG).show();
+		} catch (TimeoutException e) {
+			Toast.makeText(MapViewerActivity.this, "Ooops... couldn't find that!",Toast.LENGTH_LONG).show();
+		}
+	}
 	
 	// handle Flickr oAuth
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -274,9 +285,7 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 					try {
 						accessToken = new RetrieveAccessTokenTask(MapViewerActivity.this).execute(service,requestToken,verifier).get();
 					} catch (InterruptedException e1) {
-						//e1.printStackTrace();
 					} catch (ExecutionException e1) {
-						//e1.printStackTrace();
 					}
 					ACCESS_KEY=accessToken.getToken();
 					ACCESS_SECRET=accessToken.getSecret();
@@ -311,9 +320,7 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		double latitude = (double) (location.getLatitude());
-		double longitude = (double) (location.getLongitude());
-		addOverlayItems(latitude, longitude,mOverlayCurrentLocation);
+		displayCurrentLocation();
 	}
 
 	@Override
@@ -455,13 +462,10 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 				.apiSecret(Constants.API_SECRET)
 				.callback(Constants.CALLBACK_URI)
 				.build();
-		//TODO:
 		try {
 			requestToken = new OAuthTaskGetRequestToken(MapViewerActivity.this).execute(service).get();
 		} catch (InterruptedException e1) {
-			//e1.printStackTrace();
 		} catch (ExecutionException e1) {
-			//e1.printStackTrace();
 		}	
 		
 		Intent i = new Intent(this,FlickrOAuth.class);
@@ -470,14 +474,11 @@ public class MapViewerActivity extends MapActivity implements LocationListener {
 				try {
 					authorizationUrl = new OAuthTaskAuthorizationUrl(MapViewerActivity.this).execute(service,requestToken).get();
 					// Getting the User Authorization
-			        //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(authorizationUrl)));
 					i.putExtra("authorizationUrl", authorizationUrl);
 					startActivityForResult(i,1);
 					
 				} catch (InterruptedException e) {
-					//e.printStackTrace();
 				} catch (ExecutionException e) {
-					//e.printStackTrace();
 				}
 		}
 	}
@@ -614,3 +615,84 @@ class RetrieveAccessTokenTask extends AsyncTask<Object, Void, Token> {
 	        }
 	 }
 }
+class LocationTask extends AsyncTask<Object, Void, List<Address>> {
+    /** progress dialog to show user that the background process is processing. */
+    private ProgressDialog dialog;
+    /** application context. */
+    private Context myContext;
+	private Geocoder geocoder;
+	private String locName;
+	
+	public LocationTask(Context context){
+		myContext = context;
+		dialog = new ProgressDialog(myContext);
+	}
+	@Override
+	protected void onPreExecute() {
+        dialog.show();
+    }
+
+    @Override
+    // Actual download method, run in the task thread
+    protected List<Address> doInBackground(Object... params) {
+    	geocoder=(Geocoder)params[0];
+    	locName=(String)params[1];
+    	try {
+			return geocoder.getFromLocationName(locName, 5);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return null;
+    	
+    }
+    
+	@Override
+    protected void onPostExecute(List<Address> addressList) {
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+	}
+}
+	class CurrentLocationTask extends AsyncTask<Object, Void, City> {
+	    /** progress dialog to show user that the background process is processing. */
+	    private ProgressDialog dialog;
+	    /** application context. */
+	    private Context myContext;
+		
+		public CurrentLocationTask(Context context){
+			myContext = context;
+			dialog = new ProgressDialog(myContext);
+		}
+		@Override
+		protected City doInBackground(Object... params) {
+			LocationManager locationManager=(LocationManager)params[0];
+			String bestProvider=(String)params[1];
+			Geocoder gcd=(Geocoder)params[2];
+			
+			Location currentLocation= locationManager.getLastKnownLocation(bestProvider);
+			
+			List<Address> currentAddress=null;
+			try {
+				currentAddress = gcd.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+			} catch (IOException e) {
+			}
+			String cityName="";
+			if (currentAddress!=null&&currentAddress.size() > 0)
+				cityName = currentAddress.get(0).getLocality();
+			
+			City currentCity=new City();
+			currentCity.setName(cityName);
+			currentCity.setLatitude(currentLocation.getLatitude());
+			currentCity.setLongitude(currentLocation.getLongitude());
+			
+			return currentCity;
+		}
+		@Override
+	    protected void onPostExecute(City currentCity) {
+	        if (dialog.isShowing()) {
+	            dialog.dismiss();
+	        }
+		}
+		
+	}

@@ -271,7 +271,6 @@ public class PhotoActivity extends Activity {
 	    
 		@Override
 		protected void onPreExecute() {
-	        dialog.setMessage("Progressing...");
 	        dialog.show();
 	    }
 		@Override
@@ -296,7 +295,6 @@ public class PhotoActivity extends Activity {
 		}
 		@Override
 		protected void onPreExecute() {
-	        dialog.setMessage("Progressing...");
 	        dialog.show();
 	    }
 		@Override

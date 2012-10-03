@@ -19,17 +19,11 @@ package com.FlickrCity.FlickrAPI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.widget.GridView;
-
 import com.FlickrCity.FlickrCityAndroid.Utils.Constants;
 import com.FlickrCity.FlickrCityAndroid.Utils.HttpAuthRequestTask;
 import com.FlickrCity.FlickrCityAndroid.Utils.HttpGetNetworkTask;
 import com.FlickrCity.FlickrCityAndroid.Utils.HttpGetPhotoInfoTask;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
@@ -267,37 +261,6 @@ public class FlickrAPI {
 		}
 		return userName;
 		
-	}
-	// Get photo Info from flickr.photos.getInfo method
-	private static String httpGETPhotoInfo(String photo_id,Context context) {
-		String url=	"http://api.flickr.com/services/rest/?method=flickr.photos.getInfo"
-				+ "&api_key=" + Constants.API_KEY + "&photo_id=" + photo_id
-				+ "&format=json&nojsoncallback=1";
-	try {
-		return new HttpGetNetworkTask(context).execute(url).get();
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		return null;
-	} catch (ExecutionException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		return null;
-	}
-	}
-	
-	// flickr.photos.getInfo
-	private static FlickrPhoto parseJSONPhotoInfoReturn(final String jsonString) {
-		final FlickrPhoto photo=new FlickrPhoto();
-		try {
-			JSONObject jobj = new JSONObject(jsonString);
-			photo.setOwner(jobj.getJSONObject("photo").getJSONObject("owner").getString("username"));
-			photo.setTitle(jobj.getJSONObject("photo").getJSONObject("title").getString("_content"));
-		}
-		catch (Exception e) {
-			//e.printStackTrace();
-		}	 
-		return photo;
 	}
 	
 	public static FlickrPhoto getPhotoTitleByID(String photo_id,Context context){

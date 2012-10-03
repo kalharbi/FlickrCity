@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<!-- Common -->
-	<string name="title">FlickrCity</string>
-	<string name="app_name">FlickrCity</string>
+	<string name="title">Flickr City</string>
+	<string name="app_name">Flickr City</string>
 	<string name="ok">OK</string>
 
 	<!-- main.xml -->
@@ -39,7 +39,7 @@
     </string-array>
 	
 	<!-- about.xml -->
-	<string name="about_text">FlickrCity is an open source Android app that allows you to explore the most recent Flickr photos that have been taken from cities around the world.\nFor more information about this app visit:\n\n\nhttp://flickr.com/services/apps/72157629645652013\n\n
+	<string name="about_text">Flickr City is an open source Android app that allows you to explore the most recent Flickr photos that have been taken from cities around the world.\nFor more information about this app visit:\n\n\nhttp://flickr.com/services/apps/72157629645652013\n\n
 	    \n\nVersion: #</string>
 	    
 	<!-- photo.xml -->

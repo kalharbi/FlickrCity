@@ -29,7 +29,6 @@ public class HttpGetPhotoInfoTask extends AsyncTask<String, Void,FlickrPhoto> {
 	}
 	@Override
 	protected void onPreExecute() {
-        dialog.setMessage("Progressing...");
         dialog.show();
     }
 	@Override

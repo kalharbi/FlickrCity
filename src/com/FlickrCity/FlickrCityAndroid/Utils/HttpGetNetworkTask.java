@@ -24,7 +24,6 @@ public class HttpGetNetworkTask extends AsyncTask <String, Void,String>{
 	}
 	@Override
 	protected void onPreExecute() {
-        dialog.setMessage("Progressing...");
         dialog.show();
     }
 	@Override
